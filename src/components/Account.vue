@@ -28,9 +28,9 @@
                     <mu-list-item-action>
                         <mu-icon value="book"></mu-icon>
                     </mu-list-item-action>
-                    <mu-list-item-title>{{ sysToken.balance }}</mu-list-item-title>
+                    <mu-list-item-title @click="goTransferList(sysToken)">{{ sysToken.balance }}</mu-list-item-title>
                     <mu-list-item-action style="flex-direction: row; align-items: center;">
-                        <mu-list-item-after-text>TOK</mu-list-item-after-text>
+                        <mu-list-item-after-text @click="goTransferList(sysToken)">TOK</mu-list-item-after-text>
                         <mu-button icon color="error" @click="goTransfer(sysToken)">
                             <mu-icon value="swap_horiz"></mu-icon>
                         </mu-button>
@@ -42,9 +42,10 @@
                         <mu-list-item-action>
                             <mu-icon value="style"></mu-icon>
                         </mu-list-item-action>
-                        <mu-list-item-title>{{ token.balance }}</mu-list-item-title>
+                        <mu-list-item-title @click="goTransferList(token)">{{ token.balance }}</mu-list-item-title>
                         <mu-list-item-action style="flex-direction: row; align-items: center;">
-                            <mu-list-item-after-text>{{ token.name }}</mu-list-item-after-text>
+                            <mu-list-item-after-text @click="goTransferList(token)">{{ token.name }}
+                            </mu-list-item-after-text>
                             <mu-button icon color="error" @click="goTransfer(token)">
                                 <mu-icon value="swap_horiz"></mu-icon>
                             </mu-button>
@@ -127,7 +128,7 @@
         },
         created: function () {
             let self = this
-            self.$emit('setTop', {title: 'disToken', back: true, add: false})
+            self.$emit('setTop', {title: 'DisToken', back: true, add: false})
             self.account_name = self.$route.params.name
             self.account = null
             let hasAccs = self.$cookies.isKey('disTokenAccounts')
@@ -284,6 +285,9 @@
             },
             goTransfer: function (token) {
                 this.$router.push('/Transfer/' + this.account_name + '/' + token.name)
+            },
+            goTransferList: function (token) {
+                this.$router.push('/TransferList/' + this.account_name + '/' + token.name)
             }
         }
     }

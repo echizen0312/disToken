@@ -34,7 +34,7 @@
         },
         created: function () {
             let self = this
-            self.$emit('setTop', {title: 'disToken', back: false, add: false})
+            self.$emit('setTop', {title: 'DisToken', back: false, add: false})
         },
         methods: {
             getKeys: function () {

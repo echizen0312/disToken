@@ -115,7 +115,7 @@
         },
         created: function () {
             let self = this
-            self.$emit('setTop', {title: 'disToken', back: true, add: false})
+            self.$emit('setTop', {title: 'DisToken', back: true, add: false})
             self.account_name = self.$route.params.name
             self.account = null
             let hasAccs = self.$cookies.isKey('disTokenAccounts')

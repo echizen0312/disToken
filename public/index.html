@@ -6,12 +6,16 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
-    <title>disToken</title>
+    <title>DisToken</title>
     <script>
         // let chainId = '6ee2cb8ac547446108eecb942d7167f181cef7af2aa96c9086f14e01aee5b2ff'
         let chainId = 'cf057bbfb72640471fd910bcb67639c22df9f92470936cddc1ade0e2f2e7dc4f'
         // let eosAddress = 'http://112.74.52.242'
         let eosAddress = 'http://10.255.1.225:8888'
+        // let dbAddress = 'http://112.74.52.242'
+        let dbAddress = 'http://10.255.1.225:3000'
+        // let trackerAddress = 'http://eos.limitsoft.cn/disTokenTracker/#/Transaction/'
+        let trackerAddress = 'http://10.255.1.225:3000/disTokenTracker/#/Transaction/'
         let config = {
             chainId: chainId,
             httpEndpoint: eosAddress,
@@ -47,10 +51,20 @@
                 name: 'LMT',
                 balance: 0,
                 isSys: false
+            },
+            {
+                account: 'bdaoiomaster',
+                name: 'BDC',
+                balance: 0,
+                isSys: false
+            },
+            {
+                account: 'bdaoiomaster',
+                name: 'BDT',
+                balance: 0,
+                isSys: false
             }
         ]
-        // let trackerAddress = 'http://eos.limitsoft.cn/disTokenTracker/#/Transaction/'
-        let trackerAddress = 'http://10.255.1.225:3000/disTokenTracker/#/Transaction/'
     </script>
 </head>
 <body>

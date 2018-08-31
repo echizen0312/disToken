@@ -31,7 +31,7 @@
         data() {
             return {
                 path: '1',
-                title: 'disToken',
+                title: 'DisToken',
                 back: false,
                 add: false
             }

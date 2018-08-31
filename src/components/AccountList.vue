@@ -54,7 +54,7 @@
         },
         created: function () {
             let self = this
-            self.$emit('setTop', {title: 'disToken', back: false, add: true});
+            self.$emit('setTop', {title: 'DisToken', back: false, add: true});
             let hasAccs = self.$cookies.isKey('disTokenAccounts')
             if (hasAccs) {
                 let tmp = JSON.parse(self.$cookies.get('disTokenAccounts'))
