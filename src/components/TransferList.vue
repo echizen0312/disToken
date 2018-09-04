@@ -18,7 +18,8 @@
                     <mu-list v-loading="loading1" data-mu-loading-size="24">
                         <template v-for="(transfer, index) in outList">
                             <mu-divider :key="transfer.trx_id" v-if="index > 0"></mu-divider>
-                            <mu-list-item button :ripple="false" :key="transfer.trx_id + index">
+                            <mu-list-item button :ripple="false" :key="transfer.trx_id + index"
+                                          @click="showTransferInfo(transfer)">
                                 <!--<mu-list-item-content>-->
                                 <div style="flex: 1; display: flex; flex-direction: row;">
                                     <mu-list-item-title>{{ transfer.data.to }}</mu-list-item-title>
@@ -37,7 +38,8 @@
                     <mu-list v-loading="loading2" data-mu-loading-size="24">
                         <template v-for="(transfer, index) in inList">
                             <mu-divider :key="transfer.trx_id" v-if="index > 0"></mu-divider>
-                            <mu-list-item button :ripple="false" :key="transfer.trx_id + index">
+                            <mu-list-item button :ripple="false" :key="transfer.trx_id + index"
+                                          @click="showTransferInfo(transfer)">
                                 <!--<mu-list-item-content>-->
                                 <div style="flex: 1; display: flex; flex-direction: row;">
                                     <mu-list-item-title>{{ transfer.data.from }}</mu-list-item-title>
@@ -54,6 +56,39 @@
                 </div>
             </div>
         </mu-card>
+        <mu-dialog title="转账详情" width="600" max-width="80%" :esc-press-close="false"
+                   :overlay-close="false" :open.sync="openAlert">
+            <mu-list style="padding: 0;">
+                <mu-list-item button :ripple="false">
+                    <mu-list-item-action>
+                        from
+                    </mu-list-item-action>
+                    <mu-list-item-title style="text-align: right;">{{ nowData.from }}</mu-list-item-title>
+                </mu-list-item>
+                <mu-divider></mu-divider>
+                <mu-list-item button :ripple="false">
+                    <mu-list-item-action>
+                        to
+                    </mu-list-item-action>
+                    <mu-list-item-title style="text-align: right;">{{ nowData.to }}</mu-list-item-title>
+                </mu-list-item>
+                <mu-divider></mu-divider>
+                <mu-list-item button :ripple="false">
+                    <mu-list-item-action>
+                        quantity
+                    </mu-list-item-action>
+                    <mu-list-item-title style="text-align: right;">{{ nowData.quantity }}</mu-list-item-title>
+                </mu-list-item>
+                <mu-divider></mu-divider>
+            </mu-list>
+            <div style="display: flex; flex-direction: row;">
+                <div style="width: 56px; height: 48px; line-height: 48px; margin-left: 16px;">memo</div>
+                <div style="flex: 1; padding-top: 13px; margin-left: 24px; margin-right: 16px; text-align: right; line-height: 22px; word-break:break-all; word-wrap:break-word;">
+                    {{ nowData.memo }}
+                </div>
+            </div>
+            <mu-button slot="actions" flat color="primary" @click="closeTransferInfo">关闭</mu-button>
+        </mu-dialog>
     </div>
 </template>
 
@@ -80,12 +115,19 @@
                 outList: [],
                 inList: [],
                 loading1: false,
-                loading2: false
+                loading2: false,
+                openAlert: false,
+                nowData: {
+                    from: '',
+                    to: '',
+                    quantity: '',
+                    memo: ''
+                }
             }
         },
         created: function () {
             let self = this
-            self.$emit('setTop', {title: 'DisToken', back: true, add: false})
+            self.$emit('setTop', {title: 'DisToken', back: true, add: false, path: '1'})
             self.account_name = self.$route.params.name
             self.token_name = self.$route.params.token
             if (self.token_name == self.sysToken.name) {
@@ -141,6 +183,13 @@
                     self.loading2 = false
                     console.log(res)
                 })
+            },
+            showTransferInfo: function (trx) {
+                this.nowData = trx.data
+                this.openAlert = true
+            },
+            closeTransferInfo: function () {
+                this.openAlert = false
             },
             goTransfer: function () {
                 this.$router.push('/Transfer/' + this.account_name + '/' + this.token_name)

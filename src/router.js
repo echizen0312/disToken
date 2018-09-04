@@ -5,6 +5,7 @@ import AccountList from './components/AccountList.vue'
 import Account from './components/Account.vue'
 import Transfer from './components/Transfer.vue'
 import TransferList from './components/TransferList.vue'
+import Web from './components/Web.vue'
 
 Vue.use(Router)
 
@@ -15,6 +16,8 @@ export default new Router({
     {path: '/AccountList', name: 'AccountList', component: AccountList},
     {path: '/Account/:name', name: 'Account', component: Account},
     {path: '/Transfer/:name/:token', name: 'Transfer', component: Transfer},
-    {path: '/TransferList/:name/:token', name: 'TransferList', component: TransferList}
+    {path: '/TransferList/:name/:token', name: 'TransferList', component: TransferList},
+    {path: '/Web', name: 'Web', component: Web},
+    {path: '/Tracker/:trx_id', name: 'Tracker', component: Web}
   ]
 })

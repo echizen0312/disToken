@@ -1,18 +1,30 @@
 <template>
     <div style="width: 100%; padding: 10px; max-width: 450px; margin: 0 auto;">
-        <mu-card
-                v-for="(account, index) in accounts"
-                v-if="account.name != 'a'"
-                :key="account.name + index"
-                style="width: 100%; margin-bottom: 10px; text-align: left; position: relative; background-color: #e3f2fd;"
-                @click="accountClick(account)">
-            <mu-card-title :title="account.name" sub-title="TOK账户"></mu-card-title>
-            <mu-button icon color="red400" style="position: absolute; top: 20px; right: 5px;"
-                       @click.stop="removeAccount(account)">
-                <mu-icon value="close"></mu-icon>
-            </mu-button>
-        </mu-card>
-        <div v-for="(account, index) in accounts" :key="account.key + index" style=" display: none;"/>
+        <mu-list textline="two-line">
+            <mu-sub-header style="text-align: left;">账户列表</mu-sub-header>
+            <mu-divider></mu-divider>
+            <template v-for="(account, index) in accounts">
+                <mu-list-item avatar :ripple="false" button :key="account.name + index">
+                    <mu-list-item-action @click="accountClick(account)">
+                        <mu-avatar color="lightBlue600">
+                            <mu-icon value="assignment_ind"></mu-icon>
+                        </mu-avatar>
+                    </mu-list-item-action>
+                    <mu-list-item-content @click="accountClick(account)">
+                        <mu-list-item-title style="font-size: 19px;margin-bottom: 2px;">{{ account.name }}
+                        </mu-list-item-title>
+                        <mu-list-item-sub-title style="font-size: 12px;">TOK账户</mu-list-item-sub-title>
+                    </mu-list-item-content>
+                    <mu-list-item-action>
+                        <mu-button icon color="red500" @click.stop="confirm(account)">
+                            <mu-icon value="close"></mu-icon>
+                        </mu-button>
+                    </mu-list-item-action>
+                </mu-list-item>
+                <mu-divider :key="index"></mu-divider>
+            </template>
+        </mu-list>
+        <!--<div v-for="(account, index) in accounts" :key="account.key + index" style=" display: none;"/>-->
         <mu-dialog title="导入明文私钥" width="600" max-width="80%" :esc-press-close="false"
                    :overlay-close="false" :open.sync="openAlert">
             <mu-form :model="form" label-width="80">
@@ -40,10 +52,7 @@
         data() {
             return {
                 config: config,
-                accounts: [{
-                    name: 'a',
-                    key: 'b'
-                }],
+                accounts: [],
                 accountsC: [],
                 openAlert: false,
                 form: {
@@ -54,18 +63,21 @@
         },
         created: function () {
             let self = this
-            self.$emit('setTop', {title: 'DisToken', back: false, add: true});
+            self.$emit('setTop', {title: 'DisToken', back: false, add: true, path: '1'});
             let hasAccs = self.$cookies.isKey('disTokenAccounts')
             if (hasAccs) {
                 let tmp = JSON.parse(self.$cookies.get('disTokenAccounts'))
                 for (let i in tmp) {
                     self.accounts.push(tmp[i])
-                    self.accountsC.push(tmp[i])
+                    // self.accountsC.push(tmp[i])
                 }
             }
-            if (self.accountsC.length == 0) {
+            if (self.accounts.length == 0) {
                 self.openAlert = true
             }
+            // if (self.accountsC.length == 0) {
+            //     self.openAlert = true
+            // }
         },
         methods: {
             addClick: function () {
@@ -121,17 +133,28 @@
                         if (ss !== undefined && ss.length === 1) {
                             acc.name = ss[0]
                             self.accounts.push(acc)
-                            self.accountsC.push(acc)
-                            self.$cookies.set('disTokenAccounts', JSON.stringify(self.accountsC))
+                            // self.accountsC.push(acc)
+                            self.$cookies.set('disTokenAccounts', JSON.stringify(self.accounts))
+                            // self.$cookies.set('disTokenAccounts', JSON.stringify(self.accountsC))
 
                         } else {
-                            alert('你牛逼')
+                            alert('秘钥可能不正确')
                         }
                         self.openAlert = false
                     }).catch(error => {
                         console.log(error)
                     })
                 }
+            },
+            confirm: function (acc) {
+                let self = this
+                self.$confirm('确定要删除？', '提示', {
+                    type: 'warning'
+                }).then(({result}) => {
+                    if (result) {
+                        self.removeAccount(acc)
+                    }
+                })
             },
             removeAccount: function (acc) {
                 let self = this
@@ -141,14 +164,15 @@
                         self.accounts.splice(i, 1)
                     }
                 }
-                for (let i in self.accountsC) {
-                    let obj = self.accountsC[i]
-                    if (obj.name === acc.name) {
-                        self.accountsC.splice(i, 1)
-                    }
-                }
+                // for (let i in self.accountsC) {
+                //     let obj = self.accountsC[i]
+                //     if (obj.name === acc.name) {
+                //         self.accountsC.splice(i, 1)
+                //     }
+                // }
                 self.nowAccount = null
-                self.$cookies.set('disTokenAccounts', JSON.stringify(self.accountsC))
+                self.$cookies.set('disTokenAccounts', JSON.stringify(self.accounts))
+                // self.$cookies.set('disTokenAccounts', JSON.stringify(self.accountsC))
             }
         }
     }

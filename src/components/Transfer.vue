@@ -115,7 +115,7 @@
         },
         created: function () {
             let self = this
-            self.$emit('setTop', {title: 'DisToken', back: true, add: false})
+            self.$emit('setTop', {title: 'DisToken', back: true, add: false, path: '1'})
             self.account_name = self.$route.params.name
             self.account = null
             let hasAccs = self.$cookies.isKey('disTokenAccounts')
@@ -202,7 +202,8 @@
                 this.$router.go(-1);
             },
             goTracker: function () {
-                window.open(trackerAddress + this.trx_id)
+                window.open(trackerAddress + 'Transaction/' + this.trx_id)
+                // this.$router.push('/Tracker/' + this.trx_id)
             }
         }
     }
