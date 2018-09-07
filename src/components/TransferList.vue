@@ -11,15 +11,47 @@
             <div style="padding: 10px 15px 5px 15px; ">
                 <mu-tabs :value.sync="active1" inverse color="secondary" text-color="rgba(0, 0, 0, .54)" full-width
                          @change="change">
+                    <mu-tab>全部</mu-tab>
                     <mu-tab>转出</mu-tab>
                     <mu-tab>转入</mu-tab>
                 </mu-tabs>
                 <div v-if="active1 === 0">
+                    <mu-list v-loading="loading3" data-mu-loading-size="24">
+                        <template v-for="(transfer, index) in allList">
+                            <mu-divider :key="transfer.trx_id" v-if="index > 0"></mu-divider>
+                            <mu-list-item button :ripple="false" :key="transfer.trx_id + index"
+                                          @click="showTransferInfo(transfer)">
+                                <mu-list-item-action>
+                                    <mu-icon value="unarchive" color="orange800"
+                                             v-if="transfer.data.from == account_name"></mu-icon>
+                                    <mu-icon value="archive" color="green600" v-else></mu-icon>
+                                </mu-list-item-action>
+                                <!--<mu-list-item-content>-->
+                                <div style="flex: 1; display: flex; flex-direction: row;">
+                                    <mu-list-item-title v-if="transfer.data.from == account_name">{{ transfer.data.to
+                                        }}
+                                    </mu-list-item-title>
+                                    <mu-list-item-title v-else>{{ transfer.data.from }}</mu-list-item-title>
+                                    <mu-list-item-sub-title style="text-align: right;">{{ transfer.data.quantity }}
+                                    </mu-list-item-sub-title>
+                                </div>
+                                <!--</mu-list-item-content>-->
+                            </mu-list-item>
+                        </template>
+                        <mu-list-item button :ripple="false" v-if="allList.length == 0">
+                            <mu-list-item-title style="text-align: center; margin-top: 8px;">没有记录</mu-list-item-title>
+                        </mu-list-item>
+                    </mu-list>
+                </div>
+                <div v-if="active1 === 1">
                     <mu-list v-loading="loading1" data-mu-loading-size="24">
                         <template v-for="(transfer, index) in outList">
                             <mu-divider :key="transfer.trx_id" v-if="index > 0"></mu-divider>
                             <mu-list-item button :ripple="false" :key="transfer.trx_id + index"
                                           @click="showTransferInfo(transfer)">
+                                <mu-list-item-action>
+                                    <mu-icon value="unarchive" color="orange800"></mu-icon>
+                                </mu-list-item-action>
                                 <!--<mu-list-item-content>-->
                                 <div style="flex: 1; display: flex; flex-direction: row;">
                                     <mu-list-item-title>{{ transfer.data.to }}</mu-list-item-title>
@@ -34,12 +66,15 @@
                         </mu-list-item>
                     </mu-list>
                 </div>
-                <div v-if="active1 === 1">
+                <div v-if="active1 === 2">
                     <mu-list v-loading="loading2" data-mu-loading-size="24">
                         <template v-for="(transfer, index) in inList">
                             <mu-divider :key="transfer.trx_id" v-if="index > 0"></mu-divider>
                             <mu-list-item button :ripple="false" :key="transfer.trx_id + index"
                                           @click="showTransferInfo(transfer)">
+                                <mu-list-item-action>
+                                    <mu-icon value="archive" color="green600"></mu-icon>
+                                </mu-list-item-action>
                                 <!--<mu-list-item-content>-->
                                 <div style="flex: 1; display: flex; flex-direction: row;">
                                     <mu-list-item-title>{{ transfer.data.from }}</mu-list-item-title>
@@ -114,8 +149,10 @@
                 },
                 outList: [],
                 inList: [],
+                allList: [],
                 loading1: false,
                 loading2: false,
+                loading3: false,
                 openAlert: false,
                 nowData: {
                     from: '',
@@ -138,16 +175,19 @@
                     self.nowToken = userToken[i]
                 }
             }
-            self.getAccountTransfersOut()
+            self.getAccountTransfersAll()
         },
         methods: {
             change: function (value) {
                 let self = this
-                if (value == 0) {
+                if (value == 1) {
                     self.getAccountTransfersOut()
                 }
-                if (value == 1) {
+                if (value == 2) {
                     self.getAccountTransfersIn()
+                }
+                if (value == 0) {
+                    self.getAccountTransfersAll()
                 }
             },
             getAccountTransfersOut: function () {
@@ -181,6 +221,23 @@
                     self.loading2 = false
                 }, res => {
                     self.loading2 = false
+                    console.log(res)
+                })
+            },
+            getAccountTransfersAll: function () {
+                let self = this
+                let direction = 'all'
+                self.loading3 = true
+                self.$http.get(`${self.dbAddress}/eosSak/db/GetAccountTransfers?account_name=${self.account_name}&direction=${direction}&code=${self.nowToken.account}&symbol=${self.nowToken.name}`, {}).then(res => {
+                    let data = res.data
+                    if (data.result.length > 0) {
+                        self.allList = data.result
+                    } else {
+                        self.allList = []
+                    }
+                    self.loading3 = false
+                }, res => {
+                    self.loading3 = false
                     console.log(res)
                 })
             },
