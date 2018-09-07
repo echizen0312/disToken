@@ -1,5 +1,5 @@
 <template>
-    <div style="width: 100%; padding: 10px; max-width: 450px; margin: 0 auto;">
+    <div style="width: 100%; padding: 10px; max-width: 600px; margin: 0 auto;">
         <mu-button fab color="red" style="position: fixed; bottom: 75px; right: 20px; z-index: 999;"
                    @click="goTransfer">
             <mu-icon value="swap_horiz"></mu-icon>

@@ -1,5 +1,5 @@
 <template>
-    <div style="width: 100%; padding: 10px; max-width: 450px; margin: 0 auto;">
+    <div style="width: 100%; padding: 10px; max-width: 600px; margin: 0 auto;">
         <mu-card
                 v-if="!isOver"
                 style="width: 100%; margin-bottom: 10px; text-align: left; position: relative;">

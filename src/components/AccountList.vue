@@ -1,5 +1,5 @@
 <template>
-    <div style="width: 100%; padding: 10px; max-width: 450px; margin: 0 auto;">
+    <div style="width: 100%; padding: 10px; max-width: 600px; margin: 0 auto;">
         <mu-list textline="two-line">
             <mu-sub-header style="text-align: left;">账户列表</mu-sub-header>
             <mu-divider></mu-divider>

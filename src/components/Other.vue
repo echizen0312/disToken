@@ -1,5 +1,5 @@
 <template>
-    <div class="hello" style="width: 100%; padding: 15px; max-width: 450px; margin: 0 auto;">
+    <div class="hello" style="width: 100%; padding: 15px; max-width: 600px; margin: 0 auto;">
         <h1>{{ msg }}</h1>
         <!--<el-button @click="getKeys">点我</el-button>-->
         <mu-button color="primary" @click="getKeys">点我</mu-button>
