@@ -30,7 +30,7 @@
                     </mu-list-item-action>
                     <mu-list-item-title @click="goTransferList(sysToken)">{{ sysToken.balance }}</mu-list-item-title>
                     <mu-list-item-action style="flex-direction: row; align-items: center;">
-                        <mu-list-item-after-text @click="goTransferList(sysToken)">TOK</mu-list-item-after-text>
+                        <mu-list-item-after-text @click="goTransferList(sysToken)">{{ sysToken.name }}</mu-list-item-after-text>
                         <mu-button icon color="error" @click="goTransfer(sysToken)">
                             <mu-icon value="swap_horiz"></mu-icon>
                         </mu-button>

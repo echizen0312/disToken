@@ -202,8 +202,7 @@
                 this.$router.go(-1);
             },
             goTracker: function () {
-                window.open(trackerAddress + 'Transaction/' + this.trx_id)
-                // this.$router.push('/Tracker/' + this.trx_id)
+                window.open(trackerAddress + '' + this.trx_id)
             }
         }
     }

@@ -8,26 +8,34 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
     <title>DisToken</title>
     <script>
-        let isDev = true
-        // let isDev = false
+        let isDev = 0
 
         let chainId = ''
         let eosAddress = ''
         let dbAddress = ''
         let trackerAddress = ''
 
-        if (isDev) {
+        if (isDev == 0) {
             chainId = 'cf057bbfb72640471fd910bcb67639c22df9f92470936cddc1ade0e2f2e7dc4f'
             eosAddress = 'http://10.255.1.225:8888'
             dbAddress = 'http://10.255.1.225:3000'
-            trackerAddress = 'http://10.255.1.225:3000/disTokenTracker/#/'
-        } else {
+            trackerAddress = 'http://10.255.1.225:3000/disTokenTracker/#/Transaction/'
+        } else if (isDev == 1) {
             chainId = '6ee2cb8ac547446108eecb942d7167f181cef7af2aa96c9086f14e01aee5b2ff'
             eosAddress = 'http://112.74.52.242'
             dbAddress = 'http://112.74.52.242'
-            trackerAddress = 'http://eos.limitsoft.cn/disTokenTracker/#/'
+            trackerAddress = 'http://tracker.distoken.io/disTokenTracker/#/Transaction/'
+        } else if (isDev == 2) {
+            chainId = 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
+            eosAddress = 'https://api.bp.fish'
+            dbAddress = 'https://eu2.eosdac.io'
+            trackerAddress = 'https://eospark.com/MainNet/tx/'
+        } else if (isDev == 3) {
+            chainId = '6ee2cb8ac547446108eecb942d7167f181cef7af2aa96c9086f14e01aee5b2ff'
+            eosAddress = 'http://59.110.220.75:8888'
+            dbAddress = 'http://59.110.220.75'
+            trackerAddress = 'http://59.110.220.75/disTokenTracker/#/Transaction/'
         }
-
         let config = {
             chainId: chainId,
             httpEndpoint: eosAddress,
@@ -35,11 +43,12 @@
         }
         let sysToken = {
             account: 'eosio.token',
-            name: 'TOK',
+            // name: 'TOK',
+            name: isDev == 2 ? 'EOS' : 'TOK',
             balance: 0,
             isSys: true
         }
-        let userToken = [
+        let userToken = isDev == 2 ? [] : [
             {
                 account: 'expo111111ma',
                 name: 'EXP',

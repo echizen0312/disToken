@@ -14,6 +14,7 @@
     "eosjs-api": "^7.0.0",
     "eosjs-ecc": "^4.0.2",
     "material-design-icons": "^3.0.1",
+    "moment": "^2.22.2",
     "muse-ui": "^3.0.0",
     "muse-ui-loading": "^0.2.0",
     "muse-ui-message": "^0.2.0",

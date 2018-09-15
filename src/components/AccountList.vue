@@ -13,7 +13,7 @@
                     <mu-list-item-content @click="accountClick(account)">
                         <mu-list-item-title style="font-size: 19px;margin-bottom: 2px;">{{ account.name }}
                         </mu-list-item-title>
-                        <mu-list-item-sub-title style="font-size: 12px;">TOK账户</mu-list-item-sub-title>
+                        <mu-list-item-sub-title style="font-size: 12px;">{{ sysToken.name }}账户</mu-list-item-sub-title>
                     </mu-list-item-content>
                     <mu-list-item-action>
                         <mu-button icon color="red500" @click.stop="confirm(account)">
@@ -35,7 +35,7 @@
                     <mu-text-field v-model="form.aesKey" type="password"></mu-text-field>
                 </mu-form-item>
             </mu-form>
-            <mu-button slot="actions" flat color="primary" @click="closeAlertDialog">关闭</mu-button>
+            <mu-button slot="actions" flat color="primary" @click="closeAlertDialog" style="margin-right: 8px;">关闭</mu-button>
             <mu-button slot="actions" color="primary" @click="submitAlertDialog">确定</mu-button>
         </mu-dialog>
     </div>
@@ -52,6 +52,7 @@
         data() {
             return {
                 config: config,
+                sysToken: sysToken,
                 accounts: [],
                 accountsC: [],
                 openAlert: false,
@@ -144,6 +145,12 @@
                     }).catch(error => {
                         console.log(error)
                     })
+                    /*
+                    test
+                    */
+                    // acc.name = 'sunny1sakuya'
+                    // self.accounts.push(acc)
+                    // self.$cookies.set('disTokenAccounts', JSON.stringify(self.accounts))
                 }
             },
             confirm: function (acc) {

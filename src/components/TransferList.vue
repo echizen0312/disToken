@@ -115,6 +115,13 @@
                     <mu-list-item-title style="text-align: right;">{{ nowData.quantity }}</mu-list-item-title>
                 </mu-list-item>
                 <mu-divider></mu-divider>
+                <mu-list-item button :ripple="false">
+                    <mu-list-item-action>
+                        time
+                    </mu-list-item-action>
+                    <mu-list-item-title style="text-align: right;">{{ GetMoment(nowData.time) }}</mu-list-item-title>
+                </mu-list-item>
+                <mu-divider></mu-divider>
             </mu-list>
             <div style="display: flex; flex-direction: row;">
                 <div style="width: 56px; height: 48px; line-height: 48px; margin-left: 16px;">memo</div>
@@ -129,6 +136,7 @@
 
 <script>
     /* eslint-disable no-undef */
+    import * as moment from 'moment'
 
     export default {
         name: 'TransferList',
@@ -178,6 +186,9 @@
             self.getAccountTransfersAll()
         },
         methods: {
+            GetMoment: function (date) {
+                return moment(date).format('YYYY-MM-DD HH:mm:ss')
+            },
             change: function (value) {
                 let self = this
                 if (value == 1) {
@@ -243,6 +254,7 @@
             },
             showTransferInfo: function (trx) {
                 this.nowData = trx.data
+                this.nowData.time = trx.time
                 this.openAlert = true
             },
             closeTransferInfo: function () {
