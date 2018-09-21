@@ -8,84 +8,191 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
     <title>DisToken</title>
     <script>
-        let isDev = 0
-
-        let chainId = ''
-        let eosAddress = ''
-        let dbAddress = ''
-        let trackerAddress = ''
-
-        if (isDev == 0) {
-            chainId = 'cf057bbfb72640471fd910bcb67639c22df9f92470936cddc1ade0e2f2e7dc4f'
-            eosAddress = 'http://10.255.1.225:8888'
-            dbAddress = 'http://10.255.1.225:3000'
-            trackerAddress = 'http://10.255.1.225:3000/disTokenTracker/#/Transaction/'
-        } else if (isDev == 1) {
-            chainId = '6ee2cb8ac547446108eecb942d7167f181cef7af2aa96c9086f14e01aee5b2ff'
-            eosAddress = 'http://112.74.52.242'
-            dbAddress = 'http://112.74.52.242'
-            trackerAddress = 'http://tracker.distoken.io/disTokenTracker/#/Transaction/'
-        } else if (isDev == 2) {
-            chainId = 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
-            eosAddress = 'https://api.bp.fish'
-            dbAddress = 'https://eu2.eosdac.io'
-            trackerAddress = 'https://eospark.com/MainNet/tx/'
-        } else if (isDev == 3) {
-            chainId = '6ee2cb8ac547446108eecb942d7167f181cef7af2aa96c9086f14e01aee5b2ff'
-            eosAddress = 'http://59.110.220.75:8888'
-            dbAddress = 'http://59.110.220.75'
-            trackerAddress = 'http://59.110.220.75/disTokenTracker/#/Transaction/'
-        }
-        let config = {
-            chainId: chainId,
-            httpEndpoint: eosAddress,
-            keyProvider: ''
-        }
-        let sysToken = {
-            account: 'eosio.token',
-            // name: 'TOK',
-            name: isDev == 2 ? 'EOS' : 'TOK',
-            balance: 0,
-            isSys: true
-        }
-        let userToken = isDev == 2 ? [] : [
-            {
-                account: 'expo111111ma',
-                name: 'EXP',
-                balance: 0,
-                isSys: false
+        let configList = {
+            mainNet: {
+                name: 'mainNet',
+                color: 'red500',
+                logo: 'assignment_ind',
+                chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906',
+                eosAddress: 'https://api.bp.fish',
+                dbAddress: 'https://eu2.eosdac.io',
+                trackerAddress: 'https://eospark.com/MainNet/tx/',
+                config: {
+                    chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906',
+                    httpEndpoint: 'https://api.bp.fish',
+                    keyProvider: ''
+                },
+                sysToken: {
+                    account: 'eosio.token',
+                    name: 'EOS',
+                    balance: 0,
+                    isSys: true
+                },
+                userToken: []
             },
-            {
-                account: 'sakuya',
-                name: 'SNC',
-                balance: 0,
-                isSys: false
+            testNet: {
+                name: 'testNet',
+                color: 'blueGrey400',
+                logo: 'assignment_ind',
+                chainId: 'cf057bbfb72640471fd910bcb67639c22df9f92470936cddc1ade0e2f2e7dc4f',
+                eosAddress: 'http://10.255.1.225:8888',
+                dbAddress: 'http://10.255.1.225:3000',
+                trackerAddress: 'http://10.255.1.225:3000/disTokenTracker/#/Transaction/',
+                config: {
+                    chainId: 'cf057bbfb72640471fd910bcb67639c22df9f92470936cddc1ade0e2f2e7dc4f',
+                    httpEndpoint: 'http://10.255.1.225:8888',
+                    keyProvider: ''
+                },
+                sysToken: {
+                    account: 'eosio.token',
+                    name: 'TOK',
+                    balance: 0,
+                    isSys: true
+                },
+                userToken: [
+                    {
+                        account: 'expo111111ma',
+                        name: 'EXP',
+                        balance: 0,
+                        isSys: false
+                    },
+                    {
+                        account: 'sakuya',
+                        name: 'SNC',
+                        balance: 0,
+                        isSys: false
+                    },
+                    {
+                        account: 'sakuya',
+                        name: 'SAK',
+                        balance: 0,
+                        isSys: false
+                    },
+                    {
+                        account: 'sakuya',
+                        name: 'LMT',
+                        balance: 0,
+                        isSys: false
+                    },
+                    {
+                        account: 'bdaoiomaster',
+                        name: 'BDC',
+                        balance: 0,
+                        isSys: false
+                    },
+                    {
+                        account: 'bdaoiomaster',
+                        name: 'BDT',
+                        balance: 0,
+                        isSys: false
+                    },
+                    {
+                        account: 'qbguu1master',
+                        name: 'QBGG',
+                        balance: 0,
+                        isSys: false
+                    },
+                    {
+                        account: 'qbguu2master',
+                        name: 'CVC',
+                        balance: 0,
+                        isSys: false
+                    }
+                ]
             },
-            {
-                account: 'sakuya',
-                name: 'SAK',
-                balance: 0,
-                isSys: false
+            privateNet01: {
+                name: 'privateNet01',
+                color: 'teal500',
+                logo: 'assignment_ind',
+                chainId: '6ee2cb8ac547446108eecb942d7167f181cef7af2aa96c9086f14e01aee5b2ff',
+                eosAddress: 'http://112.74.52.242',
+                dbAddress: 'http://112.74.52.242',
+                trackerAddress: 'http://tracker.distoken.io/tracker/#/Transaction/',
+                config: {
+                    chainId: '6ee2cb8ac547446108eecb942d7167f181cef7af2aa96c9086f14e01aee5b2ff',
+                    httpEndpoint: 'http://112.74.52.242',
+                    keyProvider: ''
+                },
+                sysToken: {
+                    account: 'eosio.token',
+                    name: 'TOK',
+                    balance: 0,
+                    isSys: true
+                },
+                userToken: [
+                    {
+                        account: 'sakuya',
+                        name: 'SNC',
+                        balance: 0,
+                        isSys: false
+                    },
+                    {
+                        account: 'sakuya',
+                        name: 'SAK',
+                        balance: 0,
+                        isSys: false
+                    },
+                    {
+                        account: 'sakuya',
+                        name: 'LMT',
+                        balance: 0,
+                        isSys: false
+                    },
+                    {
+                        account: 'bdaoiomaster',
+                        name: 'BDC',
+                        balance: 0,
+                        isSys: false
+                    },
+                    {
+                        account: 'bdaoiomaster',
+                        name: 'BDT',
+                        balance: 0,
+                        isSys: false
+                    }
+                ]
             },
-            {
-                account: 'sakuya',
-                name: 'LMT',
-                balance: 0,
-                isSys: false
-            },
-            {
-                account: 'bdaoiomaster',
-                name: 'BDC',
-                balance: 0,
-                isSys: false
-            },
-            {
-                account: 'bdaoiomaster',
-                name: 'BDT',
-                balance: 0,
-                isSys: false
+            privateNet02: {
+                name: 'privateNet02',
+                color: 'lightBlue600',
+                logo: 'assignment_ind',
+                chainId: '6ee2cb8ac547446108eecb942d7167f181cef7af2aa96c9086f14e01aee5b2ff',
+                eosAddress: 'http://59.110.220.75:8888',
+                dbAddress: 'http://59.110.220.75',
+                trackerAddress: 'http://hp.distoken.io/hp/#/Transaction/',
+                config: {
+                    chainId: '6ee2cb8ac547446108eecb942d7167f181cef7af2aa96c9086f14e01aee5b2ff',
+                    httpEndpoint: 'http://59.110.220.75:8888',
+                    keyProvider: ''
+                },
+                sysToken: {
+                    account: 'eosio.token',
+                    name: 'TOK',
+                    balance: 0,
+                    isSys: true
+                },
+                userToken: [
+                    {
+                        account: 'expo111111ma',
+                        name: 'EXP',
+                        balance: 0,
+                        isSys: false
+                    },
+                    {
+                        account: 'qbguu1master',
+                        name: 'QBGG',
+                        balance: 0,
+                        isSys: false
+                    },
+                    {
+                        account: 'qbguu2master',
+                        name: 'CVC',
+                        balance: 0,
+                        isSys: false
+                    }
+                ]
             }
-        ]
+        }
     </script>
 </head>
 <body>

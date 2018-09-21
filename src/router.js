@@ -14,9 +14,9 @@ export default new Router({
     {path: '/', name: 'Home', component: AccountList},
     {path: '/Other', name: 'Other', component: Other},
     {path: '/AccountList', name: 'AccountList', component: AccountList},
-    {path: '/Account/:name', name: 'Account', component: Account},
-    {path: '/Transfer/:name/:token', name: 'Transfer', component: Transfer},
-    {path: '/TransferList/:name/:token', name: 'TransferList', component: TransferList},
+    {path: '/Account/:id', name: 'Account', component: Account},
+    {path: '/Transfer/:id/:token', name: 'Transfer', component: Transfer},
+    {path: '/TransferList/:id/:token', name: 'TransferList', component: TransferList},
     {path: '/Web', name: 'Web', component: Web},
     {path: '/Tracker/:trx_id', name: 'Tracker', component: Web}
   ]

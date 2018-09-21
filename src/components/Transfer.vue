@@ -11,7 +11,7 @@
                         <mu-text-field :value="token_name" readonly></mu-text-field>
                     </mu-form-item>
                     <mu-form-item label="发送者">
-                        <mu-text-field :value="account_name" readonly></mu-text-field>
+                        <mu-text-field :value="account.name" readonly></mu-text-field>
                     </mu-form-item>
                     <mu-form-item label="接收者">
                         <mu-text-field v-model="form.to"></mu-text-field>
@@ -39,7 +39,7 @@
                         <mu-text-field :value="token_name" readonly></mu-text-field>
                     </mu-form-item>
                     <mu-form-item label="发送者">
-                        <mu-text-field :value="account_name" readonly></mu-text-field>
+                        <mu-text-field :value="account.name" readonly></mu-text-field>
                     </mu-form-item>
                     <mu-form-item label="接收者">
                         <mu-text-field v-model="form.to" readonly></mu-text-field>
@@ -73,12 +73,15 @@
         name: 'Transfer',
         data() {
             return {
-                config: config,
-                trackerAddress: trackerAddress,
-                account_name: null,
+                configList: configList,
+                config: null,
+                trackerAddress: '',
+                account_id: null,
                 token_name: null,
                 account: {
+                    id: 0,
                     name: '',
+                    netName: '',
                     key: '',
                     ram: {
                         ram_quota: '0',
@@ -95,8 +98,8 @@
                         used: '0'
                     }
                 },
-                sysToken: sysToken,
-                userToken: userToken,
+                sysToken: {},
+                userToken: [],
                 nowToken: {
                     account: 'eosio.token',
                     name: 'TOK',
@@ -116,26 +119,34 @@
         created: function () {
             let self = this
             self.$emit('setTop', {title: 'DisToken', back: true, add: false, path: '1'})
-            self.account_name = self.$route.params.name
+            self.account_id = self.$route.params.id
             self.account = null
             let hasAccs = self.$cookies.isKey('disTokenAccounts')
             if (hasAccs) {
                 let tmp = JSON.parse(self.$cookies.get('disTokenAccounts'))
                 for (let i in tmp) {
-                    if (tmp[i].name == self.account_name) {
+                    if (tmp[i].id == self.account_id) {
                         self.account = tmp[i]
                     }
                 }
             }
-            self.token_name = self.$route.params.token
-            if (self.token_name == self.sysToken.name) {
-                self.nowToken = self.sysToken
-            }
-            for (let i in userToken) {
-                if (userToken[i].name == self.token_name) {
-                    self.nowToken = userToken[i]
+            if (self.account != null) {
+                let configObj = self.configList[self.account.netName]
+                self.config = configObj.config
+                self.trackerAddress = configObj.trackerAddress
+                self.sysToken = configObj.sysToken
+                self.userToken = configObj.userToken
+                self.token_name = self.$route.params.token
+                if (self.token_name == self.sysToken.name) {
+                    self.nowToken = self.sysToken
+                }
+                for (let i in self.userToken) {
+                    if (self.userToken[i].name == self.token_name) {
+                        self.nowToken = self.userToken[i]
+                    }
                 }
             }
+
         },
         methods: {
             transferBalance: function () {
@@ -202,7 +213,7 @@
                 this.$router.go(-1);
             },
             goTracker: function () {
-                window.open(trackerAddress + '' + this.trx_id)
+                window.open(this.trackerAddress + '' + this.trx_id)
             }
         }
     }

@@ -9,13 +9,18 @@
                     <mu-list-item-action>
                         <mu-icon value="person"></mu-icon>
                     </mu-list-item-action>
-                    <mu-list-item-title>{{ account_name }}</mu-list-item-title>
+                    <mu-list-item-title>{{ account.name }}</mu-list-item-title>
                     <mu-list-item-action style="flex-direction: row; align-items: center;">
                         <mu-button icon color="info" @click="doCopy">
                             <mu-icon value="filter_none"></mu-icon>
                         </mu-button>
                     </mu-list-item-action>
-
+                </mu-list-item>
+                <mu-list-item button :ripple="false">
+                    <mu-list-item-action>
+                        <mu-icon value="linear_scale"></mu-icon>
+                    </mu-list-item-action>
+                    <mu-list-item-title>{{ account.netName }}</mu-list-item-title>
                 </mu-list-item>
             </mu-list>
         </mu-card>
@@ -30,7 +35,8 @@
                     </mu-list-item-action>
                     <mu-list-item-title @click="goTransferList(sysToken)">{{ sysToken.balance }}</mu-list-item-title>
                     <mu-list-item-action style="flex-direction: row; align-items: center;">
-                        <mu-list-item-after-text @click="goTransferList(sysToken)">{{ sysToken.name }}</mu-list-item-after-text>
+                        <mu-list-item-after-text @click="goTransferList(sysToken)">{{ sysToken.name }}
+                        </mu-list-item-after-text>
                         <mu-button icon color="error" @click="goTransfer(sysToken)">
                             <mu-icon value="swap_horiz"></mu-icon>
                         </mu-button>
@@ -102,10 +108,12 @@
         name: 'Account',
         data() {
             return {
-                config: config,
-                account_name: null,
+                configList: configList,
+                account_id: null,
                 account: {
+                    id: 0,
                     name: '',
+                    netName: '',
                     key: '',
                     ram: {
                         ram_quota: '0',
@@ -122,25 +130,30 @@
                         used: '0'
                     }
                 },
-                sysToken: sysToken,
-                userToken: userToken
+                config: null,
+                sysToken: {},
+                userToken: []
             }
         },
         created: function () {
             let self = this
             self.$emit('setTop', {title: 'DisToken', back: true, add: false, path: '1'})
-            self.account_name = self.$route.params.name
+            self.account_id = self.$route.params.id
             self.account = null
             let hasAccs = self.$cookies.isKey('disTokenAccounts')
             if (hasAccs) {
                 let tmp = JSON.parse(self.$cookies.get('disTokenAccounts'))
                 for (let i in tmp) {
-                    if (tmp[i].name == self.account_name) {
+                    if (tmp[i].id == self.account_id) {
                         self.account = tmp[i]
                     }
                 }
             }
             if (self.account != null) {
+                let configObj = self.configList[self.account.netName]
+                self.config = configObj.config
+                self.sysToken = configObj.sysToken
+                self.userToken = configObj.userToken
                 self.getAccount(self.account)
                 self.getSysBalance()
                 self.getUserBalance()
@@ -234,7 +247,7 @@
             },
             doCopy: function () {
                 let self = this
-                self.$copyText(self.account_name).then(function () {
+                self.$copyText(self.account.name).then(function () {
                     self.$alert('复制成功', '提示', {type: 'success'})
                 }, function () {
                     self.$alert('复制失败', '提示', {type: 'error'})
@@ -284,10 +297,10 @@
                 }
             },
             goTransfer: function (token) {
-                this.$router.push('/Transfer/' + this.account_name + '/' + token.name)
+                this.$router.push('/Transfer/' + this.account_id + '/' + token.name)
             },
             goTransferList: function (token) {
-                this.$router.push('/TransferList/' + this.account_name + '/' + token.name)
+                this.$router.push('/TransferList/' + this.account_id + '/' + token.name)
             }
         }
     }
