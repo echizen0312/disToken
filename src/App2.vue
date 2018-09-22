@@ -11,7 +11,10 @@
             <mu-button icon slot="right" v-show="add" @click="goAdd">
                 <mu-icon value="add"></mu-icon>
             </mu-button>
-            <mu-button icon slot="right" v-show="!add">
+            <mu-button icon slot="right" v-show="qr" @click="goQr">
+                <mu-icon value="dashboard"></mu-icon>
+            </mu-button>
+            <mu-button icon slot="right" v-show="!add && !qr">
                 <mu-icon value=""></mu-icon>
             </mu-button>
         </mu-appbar>
@@ -34,7 +37,8 @@
                 path: '1',
                 title: 'DisToken',
                 back: false,
-                add: false
+                add: false,
+                qr: false
             }
         },
         created: function () {
@@ -49,6 +53,7 @@
                 }
                 if (value == '2') {
                     // this.$router.replace('/Web')
+                    // this.$router.replace('/QrCode')
                     this.$router.replace('/Other')
                 }
             },
@@ -56,6 +61,7 @@
                 this.title = data.title
                 this.back = data.back
                 this.add = data.add
+                this.qr = data.qr
                 this.path = data.path
             },
             goBack() {
@@ -65,6 +71,12 @@
                 let self = this
                 if (typeof self.$refs.child.addClick == 'function') {
                     self.$refs.child.addClick();
+                }
+            },
+            goQr() {
+                let self = this
+                if (typeof self.$refs.child.qrClick == 'function') {
+                    self.$refs.child.qrClick();
                 }
             }
         }

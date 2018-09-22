@@ -6,6 +6,7 @@ import Account from './components/Account.vue'
 import Transfer from './components/Transfer.vue'
 import TransferList from './components/TransferList.vue'
 import Web from './components/Web.vue'
+import QrCode from './components/QrCode.vue'
 
 Vue.use(Router)
 
@@ -18,6 +19,7 @@ export default new Router({
     {path: '/Transfer/:id/:token', name: 'Transfer', component: Transfer},
     {path: '/TransferList/:id/:token', name: 'TransferList', component: TransferList},
     {path: '/Web', name: 'Web', component: Web},
-    {path: '/Tracker/:trx_id', name: 'Tracker', component: Web}
+    {path: '/Tracker/:trx_id', name: 'Tracker', component: Web},
+    {path: '/QrCode/:id', name: 'QrCode', component: QrCode}
   ]
 })

@@ -137,7 +137,7 @@
         },
         created: function () {
             let self = this
-            self.$emit('setTop', {title: 'DisToken', back: true, add: false, path: '1'})
+            self.$emit('setTop', {title: 'DisToken', back: true, add: false, qr: true, path: '1'})
             self.account_id = self.$route.params.id
             self.account = null
             let hasAccs = self.$cookies.isKey('disTokenAccounts')
@@ -301,6 +301,9 @@
             },
             goTransferList: function (token) {
                 this.$router.push('/TransferList/' + this.account_id + '/' + token.name)
+            },
+            qrClick: function () {
+                this.$router.push('/QrCode/' + this.account_id)
             }
         }
     }

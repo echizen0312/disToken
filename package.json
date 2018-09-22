@@ -18,6 +18,7 @@
     "muse-ui": "^3.0.0",
     "muse-ui-loading": "^0.2.0",
     "muse-ui-message": "^0.2.0",
+    "qrcode.vue": "^1.6.1",
     "vue": "^2.5.17",
     "vue-clipboard2": "^0.2.1",
     "vue-cookies": "^1.5.6",

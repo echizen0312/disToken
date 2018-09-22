@@ -17,7 +17,7 @@
         },
         created: function () {
             let self = this
-            self.$emit('setTop', {title: 'DisToken', back: false, add: false, path: '2'})
+            self.$emit('setTop', {title: 'DisToken', back: false, add: false, qr: false, path: '2'})
             self.trx_id = self.$route.params.trx_id
         },
         methods: {
