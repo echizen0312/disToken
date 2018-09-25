@@ -155,28 +155,31 @@
                         let tmp = datas[datas.length - 1]
                         let bytes = CryptoJS.AES.decrypt(tmp.memo, 'uiuionsidonfyiu87d8vjansd8hf871n')
                         let plaintext = bytes.toString(CryptoJS.enc.Utf8)
-                        let ss = plaintext.split('_')
-                        if (ss.length == 3) {
-                            self.token_name = ss[2]
-                            if (self.token_name == self.sysToken.name) {
-                                self.nowToken = self.sysToken
-                            }
-                            for (let i in self.userToken) {
-                                if (self.userToken[i].name == self.token_name) {
-                                    self.nowToken = self.userToken[i]
+
+                        try {
+                            let obj = JSON.parse(plaintext)
+                            if (obj.head == 'disToken_MSG' && obj.type == 'pos_pay') {
+                                self.token_name = obj.msg.token
+                                if (self.token_name == self.sysToken.name) {
+                                    self.nowToken = self.sysToken
+                                }
+                                for (let i in self.userToken) {
+                                    if (self.userToken[i].name == self.token_name) {
+                                        self.nowToken = self.userToken[i]
+                                    }
+                                }
+                                if (self.nowToken.name != '') {
+                                    self.isRun = false
+                                    self.form.to = obj.msg.to
+                                    self.form.number = obj.msg.number
+                                    self.form.memo = `order - ${new Date().getTime()}`
+                                    self.transferBalance()
+                                } else {
+                                    self.isRun = true
                                 }
                             }
-                            if (self.nowToken.name != '') {
-                                self.isRun = false
-                                self.form.to = ss[0]
-                                self.form.number = ss[1]
-                                self.form.memo = `order - ${new Date().getTime()}`
-                                self.transferBalance()
-                            } else {
-                                self.isRun = true
-                            }
-                        } else {
-                            self.isRun = true
+                        } catch (e) {
+                            console.log(e)
                         }
                     } else {
                         self.isRun = true
@@ -205,9 +208,10 @@
                     }
                     for (let i in actions) {
                         let tmp = actions[i]
-                        if (tmp.action_trace.receipt.receiver == accountName && tmp.action_trace.act.name == 'transfer' && tmp.action_trace.act.account == 'sunny' && tmp.action_trace.act.data.to == accountName)
+                        if (tmp.action_trace.receipt.receiver == accountName && tmp.action_trace.act.name == 'transfer' && tmp.action_trace.act.account == 'sakmsg' && tmp.action_trace.act.data.to == accountName)
                             list.push(tmp)
                     }
+                    res.lastId = actions.length == 0 ? 0 : actions[actions.length - 1].account_action_seq
                     if (list.length > 0) {
                         for (let i in list) {
                             let obj = list[i]
@@ -221,7 +225,7 @@
                             data.time = obj.block_time
                             data.from = obj.action_trace.act.data.from
                             data.memo = obj.action_trace.act.data.memo
-                            if (data.id > id) {
+                            if (data.id > id || data.id == 0) {
                                 res.datas.push(data)
                             }
                             if (i == list.length - 1) {
