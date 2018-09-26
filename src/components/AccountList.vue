@@ -76,7 +76,9 @@
             self.$emit('setTop', {title: 'DisToken', back: false, add: true, qr: false, path: '1'});
             let hasAccs = self.$cookies.isKey('disTokenAccounts')
             if (hasAccs) {
-                let tmp = JSON.parse(self.$cookies.get('disTokenAccounts'))
+                let oldTmp = self.$cookies.get('disTokenAccounts')
+                self.$cookies.set('disTokenAccounts', oldTmp, '15d')
+                let tmp = JSON.parse(oldTmp)
                 for (let i in tmp) {
                     self.accounts.push(tmp[i])
                     // self.accountsC.push(tmp[i])
@@ -147,9 +149,8 @@
                             acc.name = ss[0]
                             self.accounts.push(acc)
                             // self.accountsC.push(acc)
-                            self.$cookies.set('disTokenAccounts', JSON.stringify(self.accounts))
+                            self.$cookies.set('disTokenAccounts', JSON.stringify(self.accounts), '15d')
                             // self.$cookies.set('disTokenAccounts', JSON.stringify(self.accountsC))
-
                         } else {
                             alert('秘钥可能不正确')
                         }
