@@ -132,12 +132,13 @@
                 },
                 config: null,
                 sysToken: {},
-                userToken: []
+                userToken: [],
+                canQRPay: false
             }
         },
         created: function () {
             let self = this
-            self.$emit('setTop', {title: 'DisToken', back: true, add: false, qr: true, path: '1'})
+            // self.$emit('setTop', {title: 'DisToken', back: true, add: false, qr: true, path: '1'})
             self.account_id = self.$route.params.id
             self.account = null
             let hasAccs = self.$cookies.isKey('disTokenAccounts')
@@ -154,6 +155,8 @@
                 self.config = configObj.config
                 self.sysToken = configObj.sysToken
                 self.userToken = configObj.userToken
+                self.canQRPay = configObj.canQRPay
+                self.$emit('setTop', {title: 'DisToken', back: true, add: false, qr: self.canQRPay, path: '1'})
                 self.getAccount(self.account)
                 self.getSysBalance()
                 self.getUserBalance()

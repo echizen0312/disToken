@@ -151,7 +151,12 @@
         methods: {
             transferBalance: function () {
                 let self = this
-                if (self.account.name != '' && self.form.to !== '' && Number.parseFloat(self.form.number) > 0 && !self.isTring) {
+                let reg = /^\d+(\.\d{1,4})?$/
+                let isNum = reg.test(self.form.number)
+                let f = Number.parseFloat(self.form.number)
+                let s = f.toFixed(4)
+                if (self.account.name != '' && self.form.to !== '' && isNum && f > 0 && !self.isTring) {
+                    self.form.number = s
                     self.$prompt('请输入交易密码', '提示', {inputType: 'password'}).then(data => {
                         const loading = self.$loading()
                         setTimeout(function () {
@@ -162,7 +167,7 @@
                                 let config = self.config
                                 config.keyProvider = plaintext
                                 let eos = Eos(config)
-                                let quantity = self.form.number.toString() + ' ' + self.nowToken.name
+                                let quantity = s + ' ' + self.nowToken.name
                                 if (self.nowToken.isSys) {
                                     eos.transfer(self.account.name, self.form.to, quantity, self.form.memo).then(result => {
                                         let trx_id = result.transaction_id

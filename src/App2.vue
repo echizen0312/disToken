@@ -24,7 +24,7 @@
         <mu-bottom-nav style="width: 100%; position: fixed; bottom: 0; border-top: 1px solid #e0e0e0;" @change="handleSelect" :value="path">
             <mu-bottom-nav-item title="钱包" value="1" icon="credit_card"></mu-bottom-nav-item>
             <!--<mu-bottom-nav-item title="浏览器" value="2" icon="explore"></mu-bottom-nav-item>-->
-            <mu-bottom-nav-item title="其他" value="2" icon="extension"></mu-bottom-nav-item>
+            <mu-bottom-nav-item title="创建" value="2" icon="extension"></mu-bottom-nav-item>
         </mu-bottom-nav>
     </div>
 </template>
