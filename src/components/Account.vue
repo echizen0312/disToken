@@ -21,6 +21,11 @@
                         <mu-icon value="linear_scale"></mu-icon>
                     </mu-list-item-action>
                     <mu-list-item-title>{{ account.netName }}</mu-list-item-title>
+                    <mu-list-item-action style="flex-direction: row; align-items: center;">
+                        <mu-button icon color="info" @click="doExport">
+                            <mu-icon value="publish"></mu-icon>
+                        </mu-button>
+                    </mu-list-item-action>
                 </mu-list-item>
             </mu-list>
         </mu-card>
@@ -104,6 +109,7 @@
 
     let Eos = require('eosjs')
     // let ecc = require('eosjs-ecc')
+    let CryptoJS = require("crypto-js")
     export default {
         name: 'Account',
         data() {
@@ -254,6 +260,27 @@
                     self.$alert('复制成功', '提示', {type: 'success'})
                 }, function () {
                     self.$alert('复制失败', '提示', {type: 'error'})
+                })
+            },
+            doExport: function () {
+                let self = this
+                self.$prompt('请输入交易密码', '导出私钥', {inputType: 'password'}).then(data => {
+                    if (data.result && data.value != undefined && data.value != '') {
+                        let bytes = CryptoJS.AES.decrypt(self.account.key, data.value)
+                        let plaintext = bytes.toString(CryptoJS.enc.Utf8)
+                        console.log(plaintext)
+                        if (plaintext != '') {
+                            self.$copyText(plaintext).then(function () {
+                                self.$alert('成功导出私钥到剪贴板', '提示', {type: 'success'})
+                            }, function () {
+                                self.$alert('导出私钥失败', '提示', {type: 'error'})
+                            })
+                        } else {
+                            self.$alert('交易密码错误', '提示', {type: 'error'})
+                        }
+                    }
+                }).catch(e => {
+                    console.log(e)
                 })
             },
             getSysBalance: function () {

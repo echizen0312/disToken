@@ -206,6 +206,7 @@
                             } else {
                                 tmp = []
                             }
+                            self.form.aesKey = value
                             let ciphertext = CryptoJS.AES.encrypt(self.form.privateKey, self.form.aesKey);
                             let aesR = ciphertext.toString()
                             let acc = {
