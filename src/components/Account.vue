@@ -268,7 +268,7 @@
                     if (data.result && data.value != undefined && data.value != '') {
                         let bytes = CryptoJS.AES.decrypt(self.account.key, data.value)
                         let plaintext = bytes.toString(CryptoJS.enc.Utf8)
-                        console.log(plaintext)
+                        // console.log(plaintext)
                         if (plaintext != '') {
                             self.$copyText(plaintext).then(function () {
                                 self.$alert('成功导出私钥到剪贴板', '提示', {type: 'success'})

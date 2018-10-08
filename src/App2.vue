@@ -12,7 +12,7 @@
                 <mu-icon value="add"></mu-icon>
             </mu-button>
             <mu-button icon slot="right" v-show="qr" @click="goQr">
-                <mu-icon value="dashboard"></mu-icon>
+                <i class="fa fa-qrcode"></i>
             </mu-button>
             <mu-button icon slot="right" v-show="!add && !qr">
                 <mu-icon value=""></mu-icon>
@@ -24,7 +24,7 @@
         <mu-bottom-nav style="width: 100%; position: fixed; bottom: 0; border-top: 1px solid #e0e0e0;" @change="handleSelect" :value="path">
             <mu-bottom-nav-item title="钱包" value="1" icon="credit_card"></mu-bottom-nav-item>
             <!--<mu-bottom-nav-item title="浏览器" value="2" icon="explore"></mu-bottom-nav-item>-->
-            <mu-bottom-nav-item title="创建" value="2" icon="extension"></mu-bottom-nav-item>
+            <mu-bottom-nav-item title="创建" value="2" icon="person_add"></mu-bottom-nav-item>
         </mu-bottom-nav>
     </div>
 </template>
