@@ -30,12 +30,14 @@
 </template>
 
 <script>
+    /* eslint-disable no-undef */
+
     export default {
         name: 'App',
         data() {
             return {
                 path: '1',
-                title: 'DisToken',
+                title: title,
                 back: false,
                 add: false,
                 qr: false
@@ -58,7 +60,7 @@
                 }
             },
             setTopFromChild(data) {
-                this.title = data.title
+                // this.title = data.title
                 this.back = data.back
                 this.add = data.add
                 this.qr = data.qr

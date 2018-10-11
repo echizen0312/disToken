@@ -85,7 +85,7 @@
                 }
             }
             if (self.accounts.length == 0) {
-                self.openAlert = true
+                // self.openAlert = true
             }
             // if (self.accountsC.length == 0) {
             //     self.openAlert = true
