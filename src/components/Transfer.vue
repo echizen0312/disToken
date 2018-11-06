@@ -166,6 +166,7 @@
                                 self.isTring = true
                                 let config = self.config
                                 config.keyProvider = plaintext
+                                config.authorization = `${self.account.name}@active`
                                 let eos = Eos(config)
                                 let quantity = s + ' ' + self.nowToken.name
                                 if (self.nowToken.isSys) {

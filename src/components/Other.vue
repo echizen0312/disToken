@@ -64,14 +64,15 @@
                             <mu-button flat color="primary" @click="doCopy">
                                 点击复制
                             </mu-button>
-                            <mu-button flat color="primary" @click="doImport" style="margin-left: 10px;">
+                            <mu-button v-show="false" flat color="primary" @click="doImport" style="margin-left: 10px;">
                                 直接导入
                             </mu-button>
                         </p>
                         <p>
                             &nbsp;
                         </p>
-                        <mu-button class="demo-step-button" @click="submitStep3" color="primary">完成</mu-button>
+                        <mu-button v-show="false" class="demo-step-button" @click="submitStep3" color="primary">完成
+                        </mu-button>
                     </mu-step-content>
                 </mu-step>
             </mu-stepper>
